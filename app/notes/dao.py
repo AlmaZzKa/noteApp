@@ -187,6 +187,32 @@ class NoteDAO(BaseDAO):
 
                 return note_to_update  # Возвращаем обновленную заметку
 
+    @classmethod
+    async def find_by_tag(cls, tag_name: str):
+        async with async_session_maker() as session:
+            query = (
+                select(Note)
+                .join(Note.tags)
+                .options(joinedload(Note.tags))  # Используем joinedload для предзагрузки тегов
+                .filter(Tag.name == tag_name.lower())
+            )
+
+            result = await session.execute(query)
+            notes = result.unique().scalars().all()  # Получаем все заметки
+
+            # Формируем список словарей с нужными полями
+            notes_list = [
+                {
+                    "id": note.id,
+                    "title": note.title,
+                    "content": note.content,
+                    "tags": [tag.name for tag in note.tags]
+                }
+                for note in notes
+            ]
+
+            return notes_list
+
 
 
 

@@ -10,10 +10,13 @@ from alembic import context
 import sys
 from os.path import dirname, abspath
 
-sys.path.insert(0, dirname(dirname(abspath(__file__))))
-
 from app.database import DATABASE_URL, Base
 from app.notes.models import Tag, Note
+from app.users.models import User
+
+sys.path.insert(0, dirname(dirname(abspath(__file__))))
+
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

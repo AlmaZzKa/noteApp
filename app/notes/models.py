@@ -18,6 +18,8 @@ class Note(Base):
     id: Mapped[int_pk]
     title: Mapped[str_null_true]
     content: Mapped[str_null_true]
+    user_id: Mapped[int] = Column(ForeignKey("users.id"))
+
     tags: Mapped[list["Tag"]] = relationship("Tag", secondary=note_tag_association, back_populates="notes")
 
     def __str__(self):

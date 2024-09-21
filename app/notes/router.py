@@ -41,3 +41,7 @@ async def patch_note_tags(note_id: int, tags: list[str]) -> dict:
         return {"message": "Теги у заметки успешно изменены!", "tags": tags}
     else:
         return {"message": "Ошибка при изменении тегов заметки!"}
+
+@router.get("/{tag_name}", summary="Получить заметки по тегу")
+async def get_notes_by_tag(tag_name: str) -> list[SNote]:
+    return await NoteDAO.find_by_tag(tag_name)
